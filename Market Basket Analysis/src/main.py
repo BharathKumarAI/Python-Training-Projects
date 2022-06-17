@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 
 # Import utils.py
 from utils import *
-from config import MarketBasketConfig
 
 # Packages for reading configuration files
 import hydra
@@ -26,16 +25,9 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-cs = ConfigStore.instance()
-cs.store(name="marketbasket_config", node=MarketBasketConfig)
-
-log_file = log_file_obj()
-
-sys.stdout = log_file
-
-df = read_data()
-transactions = convert_as_transactions(df)
-
-sys.stdout = sys.stdout
-
-log_file.close()
+if __name__ == "__main__":
+    # Read the data
+    df = read_data()
+    print(df)
+    # convert the data into transactions
+    transactions = convert_as_transactions(df)

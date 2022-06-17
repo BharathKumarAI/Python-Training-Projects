@@ -22,10 +22,16 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
+# orig_cwd = hydra.utils.get_original_cwd()
+# path = f"{orig_cwd}/test.txt" or path = hydra.utils.to_absolute_path('test.txt')
 
-@hydra.main(config_path="../config", config_name="main")
+log = logging.getLogger(__name__)
+
+
+@hydra.main(config_path="config", config_name="main")
 def log_file_obj(config: DictConfig):
     """Function to log the file object"""
+    log.info(f"Log file: {config.logs.path}")
     log_folder_path = abspath(config.logs.path)
     # filename with the date and time
     log_file_name = (
@@ -41,10 +47,11 @@ def log_file_obj(config: DictConfig):
     return log_file
 
 
-@hydra.main(config_path="../config", config_name="main")
-def read_data(config: DictConfig):
+@hydra.main(config_path="config", config_name="main")
+def read_data(config: DictConfig) -> pd.DataFrame:
     """Function to read the data"""
-    print(config)
+    log.info(f"Reading data from: {config.data.raw.path}")
+    # print(OmegaConf.to_yaml(config))
     raw_path = abspath(config.data.raw.path)
     print(f"Read data using {raw_path}")
 
@@ -67,23 +74,22 @@ def read_data(config: DictConfig):
                 )
             else:
                 df = pd.read_csv(raw_path)
+        log.info("Reading data has been finished sucessfully")
+        log.info(df.head())
+        return df
     else:
         raise Exception("Currently only csv files are supported")
-
-    # Print the first 5 rows
-    print(df.head())
-
-    return df
 
 
 def convert_as_transactions(df):
     """Function to convert the data into transactions"""
-
+    log.info("Converting data into transactions has been started")
+    print(df.head())
     transactions = []
 
     for i in range(0, df.shape[0]):
         transactions.append(
             [str(df.values[i, j]) for j in range(0, df.shape[1])]
         )
-
+    log.info("Converting data into transactions has been finished")
     return transactions

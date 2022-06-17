@@ -28,11 +28,11 @@ Potentially these algorithms can help us to understand the strong association am
 
 _Support:_
 
-$$support(I) = \frac{\#\; transactions \;containing \;I}{\#\;transactions}$$
+$$support(I) = \frac{\\# \\; transactions \\;  containing \\; I}{\\# \\;  transactions}$$
 
 _Confidence:_
 
-$$ confidence (I_1 -> I_2) = \frac{\#\; transaction\; containing\; I_1\; and\; I_2}{\#\; transaction\; containing\; I_1}$$
+$$ confidence (I_1 -> I_2) = \frac{\\# \\;  transaction \\;  containing\\;  I_1 \\; and\\; I_2}{\\#\\; transaction\\; containing\\;  I_1}$$
 
 _Lift:_
 

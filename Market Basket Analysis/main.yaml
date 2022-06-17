@@ -1,8 +1,5 @@
 defaults:
   - model: apriori
-  - hydra/job_logging: colorlog
-  - hydra/hydra_logging: colorlog
-  - override hydra/job_logging: custom
 
 data:
   raw:
@@ -15,3 +12,10 @@ data:
 logs:
   path: Market Basket Analysis/logs/
   fileFormat: market_basket_analysis_
+
+apriori:
+  min_support: 0.2
+  min_confidence: 0.5
+  min_lift: 3
+  min_length: 2
+  max_length: 2

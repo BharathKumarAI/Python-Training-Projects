@@ -1,18 +1,13 @@
 # Import required libraries
 from ast import literal_eval
 import os
+import yaml
+import tqdm
 import logging
 import datetime
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-
-
-# Packages for reading configuration files
-import hydra
-from hydra.core.config_store import ConfigStore
-from hydra.utils import to_absolute_path as abspath
-from omegaconf import DictConfig
 
 # Association Rule Learning (ARL)
 import apyori as ap
@@ -22,20 +17,26 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-# orig_cwd = hydra.utils.get_original_cwd()
-# path = f"{orig_cwd}/test.txt" or path = hydra.utils.to_absolute_path('test.txt')
 
-log = logging.getLogger(__name__)
+logger = logging.getLogger("MarketBasketAnalysis.utils")
 
 
-@hydra.main(config_path="config", config_name="main")
-def log_file_obj(config: DictConfig):
+def config_file_reader(config_file):
+    """Function to read the configuration yaml file"""
+    logger.info("Reading configuration file from: {}".format(config_file))
+    with open(config_file, "r") as f:
+        config = yaml.load(f, Loader=yaml.FullLoader)
+    logger.info("Successfully read the configuration file: " + str(config))
+    return config
+
+
+def log_file_obj(config):
     """Function to log the file object"""
-    log.info(f"Log file: {config.logs.path}")
-    log_folder_path = abspath(config.logs.path)
+    logger.info(f"Log file: {config['logs']['path']}")
+    log_folder_path = config["logs"]["path"]
     # filename with the date and time
     log_file_name = (
-        config.logs.fileFormat
+        config["logs"]["fileFormat"]
         + datetime.datetime.now().strftime("%Y%M%d%H%m%S")
         + ".log"
     )
@@ -47,35 +48,31 @@ def log_file_obj(config: DictConfig):
     return log_file
 
 
-@hydra.main(config_path="config", config_name="main")
-def read_data(config: DictConfig) -> pd.DataFrame:
+def read_data(config) -> pd.DataFrame:
     """Function to read the data"""
-    log.info(f"Reading data from: {config.data.raw.path}")
-    # print(OmegaConf.to_yaml(config))
-    raw_path = abspath(config.data.raw.path)
-    print(f"Read data using {raw_path}")
+    raw_path = config["data"]["raw"]["path"]
+    logger.info(f"Reading data from: {raw_path}")
 
-    # hydra configuration to get current working directory: ${hydra:runtime.cwd}/../data/raw/
     # Read the data
-    if config.data.raw.format == "csv":
-        usr_sep = config.data.raw.separator
+    if config["data"]["raw"]["format"] == "csv":
+        usr_sep = config["data"]["raw"]["separator"]
         if not usr_sep:
             usr_sep = ","
 
-        header = literal_eval(config.data.raw.header)
+        header = literal_eval(config["data"]["raw"]["header"])
         if header:
             df = pd.read_csv(raw_path, header=0)
         else:
-            if config.data.raw.skip_rows:
+            if config["data"]["raw"]["skip_rows"]:
                 df = pd.read_csv(
                     raw_path,
-                    skiprows=config.data.raw.skip_rows,
+                    skiprows=config["data"]["raw"]["skip_rows"],
                     header=header,
                 )
             else:
                 df = pd.read_csv(raw_path)
-        log.info("Reading data has been finished sucessfully")
-        log.info(df.head())
+        logger.info("Reading data has been finished sucessfully")
+        logger.info(df.head())
         return df
     else:
         raise Exception("Currently only csv files are supported")
@@ -83,13 +80,25 @@ def read_data(config: DictConfig) -> pd.DataFrame:
 
 def convert_as_transactions(df):
     """Function to convert the data into transactions"""
-    log.info("Converting data into transactions has been started")
+    logger.info("Converting data into transactions has been started")
     print(df.head())
     transactions = []
 
-    for i in range(0, df.shape[0]):
+    for i in tqdm.tqdm(range(0, df.shape[0])):
+        # Apiri requires a list of lists of items in each transaction with string values
         transactions.append(
             [str(df.values[i, j]) for j in range(0, df.shape[1])]
         )
-    log.info("Converting data into transactions has been finished")
+    logger.info("Converting data into transactions has been finished")
     return transactions
+
+
+def inspect(results):
+    """Function to inspect the results"""
+    logger.info("Inspecting the results has been started")
+    lhs = [tuple(result[2][0][0]) for result in results]
+    rhs = [tuple(result[2][0][1]) for result in results]
+    supports = [result[1] for result in results]
+    confidences = [result[2][0][2] for result in results]
+    lifts = [result[2][0][3] for result in results]
+    return lhs, rhs, supports, confidences, lifts

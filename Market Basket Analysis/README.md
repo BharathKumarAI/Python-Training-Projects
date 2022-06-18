@@ -46,7 +46,6 @@ Implemetation of Apriori algorithm using these packages are shown in the noteboo
 **Key terminologies:**
 
 _Support:_
-
 The support of item I is defined as the ratio between the number of transactions containing the item I by the total number of transactions expressed as :
 
 $$support(I) = \frac{\\# \\; transactions \\;  containing \\; I}{\\# \\;  transactions}$$
@@ -99,6 +98,14 @@ _min_length:_
 
 **Note:** These values are mostly just arbitrarily chosen, so you can play with these values and see what difference it makes in the rules you get back out.
 
+### Eclat Algorithm:
+
+- only uses support
+
+1. Set a minimum support
+2. Take all the subsets in transactions having higher support than minimum support
+3. sort those subsets by decreasing support
+
 **Same project is replicated in R**: https://github.com/BharathKumarAI/R-Projects/tree/main/Market-Basket-Analysis
 
 ## References:
@@ -107,4 +114,4 @@ _min_length:_
 2. [Beginner’s Guide To Understanding Apriori Algorithm With Implementation In Python](https://analyticsindiamag.com/beginners-guide-to-understanding-apriori-algorithm-with-implementation-in-python/)
 3. [Machine Learning A-Z™: Hands-On Python & R In Data Science](https://www.udemy.com/course/machinelearning/)
 4. [Market basket Analysis: Taught by Intellipaat](https://intellipaat.com/)
-5. [Association Rules Mining/Market Basket Analysis](https://www.kaggle.com/code/datatheque/association-rules-mining-market-basket-analysis)
+5. [Association Rules Mining Using Python Generators to Handle Large Datasets - Kaggle notebook](https://www.kaggle.com/code/datatheque/association-rules-mining-market-basket-analysis)

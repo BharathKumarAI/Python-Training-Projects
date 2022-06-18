@@ -24,6 +24,25 @@ Encourage the customer to buy the items of what they already brought. In order t
 
 Potentially these algorithms can help us to understand the strong association among various products which can help the organization to take decisions like positioning of the items etc.,
 
+##### Apriori
+
+Different packages are available for Apriori algorithm.
+
+```python
+# Association Rule Learning (ARL)
+from apyori import apriori
+```
+
+OR
+
+```python
+# Association Rule Learning (ARL)
+from mlxtend.frequent_patterns import apriori
+from mlxtend.frequent_patterns import association_rules
+```
+
+Implemetation of Apriori algorithm using these packages are shown in the notebook present in the EDA folder `apriori.ipynb`
+
 **Key terminologies:**
 
 _Support:_
@@ -88,3 +107,4 @@ _min_length:_
 2. [Beginner’s Guide To Understanding Apriori Algorithm With Implementation In Python](https://analyticsindiamag.com/beginners-guide-to-understanding-apriori-algorithm-with-implementation-in-python/)
 3. [Machine Learning A-Z™: Hands-On Python & R In Data Science](https://www.udemy.com/course/machinelearning/)
 4. [Market basket Analysis: Taught by Intellipaat](https://intellipaat.com/)
+5. [Association Rules Mining/Market Basket Analysis](https://www.kaggle.com/code/datatheque/association-rules-mining-market-basket-analysis)

@@ -40,7 +40,7 @@ if __name__ == "__main__":
     # convert the data into transactions
     transactions = convert_as_transactions(df)
 
-    model = config["default"]["model"]
+    model = config["defaults"]["model"]
 
     if model == "apriori":
         # Apply Apriori algorithm
@@ -72,20 +72,34 @@ if __name__ == "__main__":
         # getting the rules and the corresponding support, confidence values
         results = list(rules)
 
-        # getting the rules and the corresponding support, confidence values as a dataframe
-        resultsinDataFrame = pd.DataFrame(
-            inspect(results),
-            columns=[
-                "Left Hand Side",
-                "Right Hand Side",
-                "Support",
-                "Confidence",
-                "Lift",
-            ],
-        )
+        if len(results) == 0:
+            logger.error("No association rules found")
+            raise Exception("No association rules found")
+        else:
+            logger.info("Association rules found")
 
-        # Display the best 10 rules
-        logger.info("Displaying the best 10 rules by Lift")
-        resultsinDataFrame.nlargest(10, "Lift")
+            # getting the rules and the corresponding support, confidence values as a dataframe
+            resultsinDataFrame = pd.DataFrame(
+                inspect(results),
+                columns=[
+                    "Left Hand Side",
+                    "Right Hand Side",
+                    "Support",
+                    "Confidence",
+                    "Lift",
+                ],
+            )
 
-    logger.info("Sucessfully completed the process")
+            dataset_name = (
+                config["data"]["raw"]["path"].split("/")[-1].split(".")[0]
+            )
+            # writing the results to a csv file
+            resultsinDataFrame.to_csv(
+                f"Market Basket Analysis/results/Output_{dataset_name}_{datetime.datetime.now().strftime('%Y%M%d%H%m%S')}.csv",
+                index=False,
+            )
+            # Display the best 10 rules
+            logger.info("Displaying the best 10 rules by Lift")
+            logger.info(resultsinDataFrame.nlargest(10, "Lift"))
+
+            logger.info("Sucessfully completed the process")

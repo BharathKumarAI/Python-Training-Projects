@@ -78,11 +78,14 @@ def read_data(config) -> pd.DataFrame:
         raise Exception("Currently only csv files are supported")
 
 
-def convert_as_transactions(df):
+def convert_as_transactions(df, drop_first_column=True):
     """Function to convert the data into transactions"""
     logger.info("Converting data into transactions has been started")
     print(df.head())
     transactions = []
+
+    if drop_first_column:
+        df.drop(df.columns[0], axis=1, inplace=True)
 
     for i in tqdm.tqdm(range(0, df.shape[0])):
         # Apiri requires a list of lists of items in each transaction with string values
@@ -93,12 +96,11 @@ def convert_as_transactions(df):
     return transactions
 
 
+## Putting the results well organised into a Pandas DataFrame
 def inspect(results):
-    """Function to inspect the results"""
-    logger.info("Inspecting the results has been started")
-    lhs = [tuple(result[2][0][0]) for result in results]
-    rhs = [tuple(result[2][0][1]) for result in results]
+    lhs = [tuple(result[2][0][0])[0] for result in results]
+    rhs = [tuple(result[2][0][1])[0] for result in results]
     supports = [result[1] for result in results]
     confidences = [result[2][0][2] for result in results]
     lifts = [result[2][0][3] for result in results]
-    return lhs, rhs, supports, confidences, lifts
+    return list(zip(lhs, rhs, supports, confidences, lifts))

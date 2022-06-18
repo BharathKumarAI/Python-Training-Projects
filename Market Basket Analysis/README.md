@@ -28,15 +28,19 @@ Potentially these algorithms can help us to understand the strong association am
 
 _Support:_
 
+The support of item I is defined as the ratio between the number of transactions containing the item I by the total number of transactions expressed as :
+
 $$support(I) = \frac{\\# \\; transactions \\;  containing \\; I}{\\# \\;  transactions}$$
 
 _Confidence:_
 
-$$ confidence (I_1 -> I_2) = \frac{\\# \\;  transaction \\;  containing\\;  I_1 \\; and\\; I_2}{\\#\\; transaction\\; containing\\;  I_1}$$
+The support of item I is defined as the ratio between the number of transactions containing the item I by the total number of transactions expressed as :
+
+$$ confidence (I_1 -> I_2) = \frac{\\# \\; transaction \\; containing\\; I_1 \\; and\\; I_2}{\\#\\; transaction\\; containing\\; I_1}$$
 
 _Lift:_
 
-If we randomly assign a item to a customer from the population - what is likely hood the customer like the item
+Lift is the ratio between the confidence and support expressed as :
 
 $$ lift (I_1 -> I_2) = \frac{confidence (I_1 -> I_2)}{support(I_2)}$$
 
@@ -46,3 +50,41 @@ $$ lift (I_1 -> I_2) = \frac{confidence (I_1 -> I_2)}{support(I_2)}$$
 2. Take all the subsets in transactions having higher support than minimum support
 3. Take all the rules of these subsets having higher confidence than minimum confidence
 4. Sort the rules by decreasing lift
+
+#### Parameters for apriori algorithm:
+
+- `min_support` - It is used to select the items with support values greater than the value specified by the parameter.
+- `min_confidence` - Filters those rules that have confidence greater than the confidence threshold specified by the parameter.
+- `min_lift` - specifies the minimum lift value for the short listed rules.
+- `min_length` - specifies the minimum number of items that you want in your rules.
+
+**How to choose parameter values for algorithm:**
+
+If Business defines the minimum support and confidence values then it is recommended to use the same values for the algorithm.else we can use the rule of thumb to choose the values.
+
+_min_support:_
+
+- Suppose we want rules for only those items that are purchased at least 5 times a day, or 7 x 5 = 35 times in one week, since our dataset is for a one-week time period. The support for those items can be calculated as 35/7500 = 0.0045.
+
+_min_confidence:_
+
+- The minimum confidence for the rules is 20% or 0.2.
+
+_min_lift:_
+
+- The value for lift as 3
+
+_min_length:_
+
+- min_length is 2 since we want at least two products in our rules.
+
+**Note:** These values are mostly just arbitrarily chosen, so you can play with these values and see what difference it makes in the rules you get back out.
+
+Same project is replicated in R: https://github.com/BharathKumarAI/R-Projects/tree/main/Market-Basket-Analysis
+
+References:
+
+1. [Apriori Algorithm](https://www.geeksforgeeks.org/apriori-algorithm-in-python/)
+2. [Beginner’s Guide To Understanding Apriori Algorithm With Implementation In Python](https://analyticsindiamag.com/beginners-guide-to-understanding-apriori-algorithm-with-implementation-in-python/)
+3. [Machine Learning A-Z™: Hands-On Python & R In Data Science](https://www.udemy.com/course/machinelearning/)
+4. [Market basket Analysis: Taught by Intellipaat](https://intellipaat.com/)

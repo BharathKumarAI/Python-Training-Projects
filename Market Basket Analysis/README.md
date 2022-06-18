@@ -34,7 +34,7 @@ $$support(I) = \frac{\\# \\; transactions \\;  containing \\; I}{\\# \\;  transa
 
 _Confidence:_
 
-The support of item I is defined as the ratio between the number of transactions containing the item I by the total number of transactions expressed as :
+This is measured by the proportion of transactions with item $I_1$, in which item $I_2$ also appears. The confidence between two items $I_1$ and $I_2$, in a transaction is defined as the total number of transactions containing both items $I_1$ and $I_2$ divided by the total number of transactions containing $I_1$.
 
 $$ confidence (I_1 -> I_2) = \frac{\\# \\; transaction \\; containing\\; I_1 \\; and\\; I_2}{\\#\\; transaction\\; containing\\; I_1}$$
 
@@ -80,9 +80,9 @@ _min_length:_
 
 **Note:** These values are mostly just arbitrarily chosen, so you can play with these values and see what difference it makes in the rules you get back out.
 
-Same project is replicated in R: https://github.com/BharathKumarAI/R-Projects/tree/main/Market-Basket-Analysis
+**Same project is replicated in R**: https://github.com/BharathKumarAI/R-Projects/tree/main/Market-Basket-Analysis
 
-References:
+## References:
 
 1. [Apriori Algorithm](https://www.geeksforgeeks.org/apriori-algorithm-in-python/)
 2. [Beginner’s Guide To Understanding Apriori Algorithm With Implementation In Python](https://analyticsindiamag.com/beginners-guide-to-understanding-apriori-algorithm-with-implementation-in-python/)
